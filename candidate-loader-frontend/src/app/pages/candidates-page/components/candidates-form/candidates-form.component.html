@@ -1,1 +1,58 @@
-<p>candidates-form works!</p>
+<mat-card>
+      <mat-card-header style="background-color: #FEF2F2;">
+            <mat-card-title>Add New Candidate</mat-card-title>
+            <mat-card-subtitle class="text-gray-600">
+                  Enter candidate details and upload their information
+            </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+            <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()">
+                  <!-- Campos de nombre y apellido -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <mat-form-field appearance="outline" class="w-full">
+                              <mat-label>Name *</mat-label>
+                              <input matInput placeholder="Enter candidate's name" formControlName="name" />
+                              <mat-error *ngIf="candidateForm.get('name')?.hasError('required')">
+                                    Name is required
+                              </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="w-full">
+                              <mat-label>Surname *</mat-label>
+                              <input matInput placeholder="Enter candidate's surname" formControlName="surname" />
+                              <mat-error *ngIf="candidateForm.get('surname')?.hasError('required')">
+                                    Surname is required
+                              </mat-error>
+                        </mat-form-field>
+                  </div>
+
+                  <!-- Zona de drag & drop -->
+                  <label class="block mb-2 font-medium">Excel File *</label>
+                  <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-6"
+                        (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+                        <input #fileInput type="file" accept=".xlsx,.xls" (change)="onFileChange($event)" hidden />
+                        <button mat-icon-button type="button" (click)="fileInput.click()">
+                              <mat-icon>upload_file</mat-icon>
+                        </button>
+                        <p class="mt-2">
+                              Click to upload or drag and drop<br />
+                              <small>Excel files only (.xlsx, .xls)</small>
+                        </p>
+                        <p *ngIf="selectedFile" class="mt-2 font-medium">
+                              {{ selectedFile.name }}
+                        </p>
+                        <mat-error *ngIf="candidateForm.get('file')?.hasError('required')">
+                              File is required
+                        </mat-error>
+                  </div>
+
+                  <!-- Botón de submit -->
+                  <div class="text-right">
+                        <button mat-raised-button color="warn" type="submit" [disabled]="candidateForm.invalid">
+                              Submit Candidate
+                        </button>
+                  </div>
+            </form>
+      </mat-card-content>
+</mat-card>
