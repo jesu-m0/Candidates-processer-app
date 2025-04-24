@@ -7,7 +7,8 @@ import { CreateCandidateRequest } from '../../shared/models/createCandidateReque
 
 
 @Injectable({
-      providedIn: 'root'
+      providedIn: 'root',
+      
 })
 export class CandidatesPageService {
 
@@ -19,7 +20,7 @@ export class CandidatesPageService {
             const formData = new FormData();
             formData.append('name', candidate.name);
             formData.append('surname', candidate.surname);
-            formData.append('file', candidate.excel);
+            formData.append('excel', candidate.excel);
 
             return this.http.post<any>(`${this.baseUrl}/create`, formData);
       }

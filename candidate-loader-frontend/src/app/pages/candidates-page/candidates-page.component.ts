@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CandidatesFormComponent } from './components/candidates-form/candidates-form.component';
 import { CandidatesListComponent } from './components/candidates-list/candidates-list.component';
 import { CandidatesPageService } from './candidates-page.service';
@@ -13,13 +13,16 @@ import { CreateCandidateRequest } from '../../shared/models/createCandidateReque
 })
 export class CandidatesPageComponent {
 
+      //candidates = signal<Candidate[]>([]);
+      candidates = signal<Candidate[]>([]);
+
       constructor(private candidatesPageService: CandidatesPageService) { }
 
       onCandidateSubmit(candidate: CreateCandidateRequest) {
             this.candidatesPageService.createCandidate(candidate).subscribe({
-                  next: response => {
-                        console.log('Candidate uploaded:', response);
-                        // TODO: update list or state
+                  next: newCandidate => {
+                        console.log('Candidate uploaded:', newCandidate);
+                        this.candidates.update(prev => [...prev, newCandidate]);
                   },
                   error: err => {
                         console.error('Upload error:', err);
