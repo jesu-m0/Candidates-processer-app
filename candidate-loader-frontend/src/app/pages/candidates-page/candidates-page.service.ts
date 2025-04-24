@@ -8,7 +8,7 @@ import { CreateCandidateRequest } from '../../shared/models/createCandidateReque
 
 @Injectable({
       providedIn: 'root',
-      
+
 })
 export class CandidatesPageService {
 
@@ -23,6 +23,10 @@ export class CandidatesPageService {
             formData.append('excel', candidate.excel);
 
             return this.http.post<any>(`${this.baseUrl}/create`, formData);
+      }
+
+      getAllCandidates(): Observable<Candidate[]> {
+            return this.http.get<Candidate[]>(this.baseUrl);
       }
 
 }

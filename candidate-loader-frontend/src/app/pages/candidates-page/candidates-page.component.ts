@@ -4,6 +4,7 @@ import { CandidatesListComponent } from './components/candidates-list/candidates
 import { CandidatesPageService } from './candidates-page.service';
 import { Candidate } from '../../shared/models/candidate.model';
 import { CreateCandidateRequest } from '../../shared/models/createCandidateRequest.model';
+import { Seniority } from '../../shared/models/seniority.enum';
 
 @Component({
       selector: 'app-candidates-page',
@@ -13,10 +14,22 @@ import { CreateCandidateRequest } from '../../shared/models/createCandidateReque
 })
 export class CandidatesPageComponent {
 
-      //candidates = signal<Candidate[]>([]);
       candidates = signal<Candidate[]>([]);
 
       constructor(private candidatesPageService: CandidatesPageService) { }
+
+      ngOnInit() {
+            this.candidatesPageService.getAllCandidates().subscribe({
+                  next: (all: Candidate[]) => {
+                        this.candidates.set(all);
+                  },
+                  error: err => {
+                        console.error('Error loading candidates:', err);
+                        // TODO: mostrar un mensaje de error en la UI
+                  }
+            });
+      }
+
 
       onCandidateSubmit(candidate: CreateCandidateRequest) {
             this.candidatesPageService.createCandidate(candidate).subscribe({
