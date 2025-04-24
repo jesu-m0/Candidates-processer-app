@@ -1,5 +1,5 @@
 <div class="container">
-      <app-candidates-form></app-candidates-form>
+      <app-candidates-form (submitCandidate)="onCandidateSubmit($event)"></app-candidates-form>
       <hr>
       <app-candidates-list></app-candidates-list>
 </div>

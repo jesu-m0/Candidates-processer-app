@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { CreateCandidateRequest } from '../../../../shared/models/createCandidateRequest.model';
 
 
 @Component({
@@ -23,8 +24,11 @@ import { CommonModule } from '@angular/common';
       styleUrl: './candidates-form.component.css'
 })
 export class CandidatesFormComponent {
+
+      @Output() submitCandidate = new EventEmitter<CreateCandidateRequest>();
+
       candidateForm!: FormGroup;
-      selectedFile: File | null = null;
+      selectedExcel: File | null = null;
 
       constructor(private fb: FormBuilder) { }
 
@@ -32,7 +36,7 @@ export class CandidatesFormComponent {
             this.candidateForm = this.fb.group({
                   name: ['', Validators.required],
                   surname: ['', Validators.required],
-                  file: [null, Validators.required]
+                  excel: [null, Validators.required]
             });
       }
 
@@ -44,32 +48,35 @@ export class CandidatesFormComponent {
             evt.preventDefault();
             const files = evt.dataTransfer?.files;
             if (files && files.length) {
-                  this.handleFile(files[0]);
+                  this.handleExcel(files[0]);
             }
       }
 
 
-      onFileChange(evt: Event) {
+      onExcelChange(evt: Event) {
             const input = evt.target as HTMLInputElement;
             if (input.files && input.files.length) {
-                  this.handleFile(input.files[0]);
+                  this.handleExcel(input.files[0]);
             }
       }
 
-      private handleFile(file: File) { //TODO: validate size and type before
-            this.selectedFile = file;
-            this.candidateForm.patchValue({ file });
+      private handleExcel(excel: File) { //TODO: validate size and type before
+            this.selectedExcel = excel;
+            this.candidateForm.patchValue({ excel });
       }
 
       onSubmit() {
-            if (this.candidateForm.invalid) return;
+            if (this.candidateForm.invalid || !this.selectedExcel) {
+                  //TODO: handle error.
+                  return;
+            }
 
-            const formData = new FormData();
-            formData.append('name', this.candidateForm.value.name);
-            formData.append('surname', this.candidateForm.value.surname);
-            formData.append('file', this.selectedFile!);
-
-            console.log('Submit:', formData);
+            this.submitCandidate.emit({
+                  name: this.candidateForm.value.name,
+                  surname: this.candidateForm.value.surname,
+                  excel: this.selectedExcel
+            });
       }
+
 
 }
