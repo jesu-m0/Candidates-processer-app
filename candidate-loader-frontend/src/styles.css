@@ -17,3 +17,8 @@ body {
       padding: 1rem;
       box-sizing: border-box;
 }
+
+.app-wrapper {
+      min-height: 100vh;
+      background-color: antiquewhite;
+}

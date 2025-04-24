@@ -1,16 +1,17 @@
-<mat-card>
-      <mat-card-header style="background-color: #FEF2F2;">
-            <mat-card-title>Add New Candidate</mat-card-title>
-            <mat-card-subtitle class="text-gray-600">
+<mat-card class="form-card">
+      <mat-card-header class="form-card-header">
+            <mat-card-title class="form-title">Add New Candidate</mat-card-title>
+            <mat-card-subtitle class="form-subtitle">
                   Enter candidate details and upload their information
             </mat-card-subtitle>
       </mat-card-header>
 
-      <mat-card-content>
+      <mat-card-content class="form-card-content">
             <form [formGroup]="candidateForm" (ngSubmit)="onSubmit()">
-                  <!-- Name and surname fields -->
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <mat-form-field appearance="outline" class="w-full">
+
+                  <!-- Name & Surname Fields -->
+                  <div class="form-row">
+                        <mat-form-field appearance="outline" class="form-field">
                               <mat-label>Name *</mat-label>
                               <input matInput placeholder="Enter candidate's name" formControlName="name" />
                               <mat-error *ngIf="candidateForm.get('name')?.hasError('required')">
@@ -18,7 +19,7 @@
                               </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" class="w-full">
+                        <mat-form-field appearance="outline" class="form-field">
                               <mat-label>Surname *</mat-label>
                               <input matInput placeholder="Enter candidate's surname" formControlName="surname" />
                               <mat-error *ngIf="candidateForm.get('surname')?.hasError('required')">
@@ -27,19 +28,18 @@
                         </mat-form-field>
                   </div>
 
-                  <!-- Drag & drop zone -->
-                  <label class="block mb-2 font-medium">Excel File *</label>
-                  <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-6"
-                        (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+                  <!-- Excel Upload -->
+                  <label class="upload-label">Excel File *</label>
+                  <div class="upload-zone" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
                         <input #fileInput type="file" accept=".xlsx" (change)="onExcelChange($event)" hidden />
                         <button mat-icon-button type="button" (click)="fileInput.click()">
                               <mat-icon>upload_file</mat-icon>
                         </button>
-                        <p class="mt-2">
+                        <p class="upload-text">
                               Click to upload or drag and drop<br />
                               <small>Excel files only (.xlsx)</small>
                         </p>
-                        <p *ngIf="selectedExcel" class="mt-2 font-medium">
+                        <p *ngIf="selectedExcel" class="upload-filename">
                               {{ selectedExcel.name }}
                         </p>
                         <mat-error *ngIf="candidateForm.get('excel')?.hasError('required')">
@@ -47,12 +47,14 @@
                         </mat-error>
                   </div>
 
-                  <!-- Submit button -->
-                  <div class="text-right">
-                        <button mat-raised-button color="warn" type="submit" [disabled]="candidateForm.invalid || !selectedExcel">
+                  <!-- Submit Button -->
+                  <div class="submit-row">
+                        <button mat-raised-button color="warn" type="submit"
+                              [disabled]="candidateForm.invalid || !selectedExcel">
                               Submit Candidate
                         </button>
                   </div>
+
             </form>
       </mat-card-content>
 </mat-card>
