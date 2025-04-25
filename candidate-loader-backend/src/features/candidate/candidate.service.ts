@@ -1,48 +1,56 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CandidateDto } from './dto/candidate.dto';
-import { Workbook } from 'exceljs';
-import { isSeniority, Seniority } from './entities/seniority.enum';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { isSeniority, Seniority } from "./entities/seniority.enum";
+import { Cell, Workbook, Worksheet } from "exceljs";
+import { CandidateDto } from "./dto/candidate.dto";
+import { CandidateFullName } from "./dto/candidate-full-name.dto";
 import { v4 as uuidv4 } from 'uuid';
-import { CandidateFullName } from './dto/candidate-full-name.dto';
-
 
 @Injectable()
 export class CandidateService {
 
-      private candidates: CandidateDto[] = [];
+      private readonly candidates: CandidateDto[] = []; //This could be replaced by a repository with a conection to the DB.
 
-      async parseAndSave(candidatePersonalInfo: CandidateFullName, excel: Express.Multer.File): Promise<CandidateDto> {
-            if (!excel || !excel.buffer) {
-                  throw new BadRequestException('Missing excel');
+
+      async parseAndSave(personalInfo: CandidateFullName, excelFile: Express.Multer.File): Promise<CandidateDto> {
+
+            if (!excelFile?.buffer) {
+                  throw new BadRequestException('Excel file is missing');
             }
 
+            // load workbook & first sheet
             const workbook = new Workbook();
-            await workbook.xlsx.load(excel.buffer);
-
-            const worksheet = workbook.worksheets[0];
-            const headerRow = worksheet.getRow(1);
-            const dataRow = worksheet.getRow(2);
-            if (headerRow.cellCount < 3 || dataRow.cellCount < 3) {
-                  throw new BadRequestException('Excel has to have at least 3 columns: seniority, years, availability');
+            await workbook.xlsx.load(excelFile.buffer);
+            const sheet = workbook.worksheets[0];
+            if (!sheet) {
+                  throw new BadRequestException('Excel contains no sheets');
             }
 
-            const seniorityText = dataRow.getCell(1).text.trim().toLowerCase();
-            if (!isSeniority(seniorityText)) {
-                  throw new BadRequestException(
-                        `Invalid seniority: '${seniorityText}'. Invalid values: ${Object.values(Seniority).join(', ')}`
-                  );
+            // enforce exactly one row and 3 columns
+            if (sheet.rowCount !== 1) {
+                  throw new BadRequestException('Excel must have exactly one data row');
+            }
+            const row = sheet.getRow(1);
+            if (row.cellCount < 3) {
+                  throw new BadRequestException('Row must have 3 columns: Seniority, Years, Availability');
             }
 
-            const yearsText = dataRow.getCell(2).text.trim();
-            const availabilityText = dataRow.getCell(3).text.trim().toLowerCase();
+            // ── ASSUMPTION: the Excel row is correctly formatted as [string, number, boolean] 
+            // No further validation is performed in this technical test scope.
+            const seniorityRaw = row.getCell(1).text.trim().toLowerCase();
+            const yearsRaw = row.getCell(2).value;
+            const availabilityRaw = row.getCell(3).text.trim().toLowerCase();
+
+            const seniority = seniorityRaw as Seniority;
+            const years = Number(yearsRaw);
+            const availability = availabilityRaw === 'true';
 
             const newCandidate: CandidateDto = {
                   id: uuidv4(),
-                  name: candidatePersonalInfo.name,
-                  surname: candidatePersonalInfo.surname,
-                  seniority: seniorityText,
-                  years: Number(yearsText),
-                  availability: availabilityText === 'true',
+                  name: personalInfo.name,
+                  surname: personalInfo.surname,
+                  seniority,
+                  years,
+                  availability,
             };
 
             this.candidates.push(newCandidate);
@@ -52,6 +60,4 @@ export class CandidateService {
       findAll(): CandidateDto[] {
             return this.candidates;
       }
-
 }
-

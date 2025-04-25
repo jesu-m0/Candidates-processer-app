@@ -1,6 +1,7 @@
 .no-candidates-text {
       font-size: 1.25rem;
       font-weight: 600;
+      color: #6e6e6e;
 }
 
 .candidates-table {
@@ -15,10 +16,10 @@
 .section-title {
       font-size: 1.5rem;
       font-weight: 600;
-      margin: 1.5rem 1.5rem 0rem;
+      margin: 1.25rem 1.25rem 0rem;
 }
 
-:host ::ng-deep .senior-badge .mdc-evolution-chip__cell {
+:host ::ng-deep .senior-badge .mdc-evolution-chip__cell { /* Needed to apply custom styles inside Angular Material chip component */
       border-radius: 10rem;
       background-color: #3f51b5;
 }
