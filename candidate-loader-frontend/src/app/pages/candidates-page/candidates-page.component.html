@@ -5,5 +5,10 @@
 </div>
 
 <div class="container">
+
+      <p *ngIf="errorMessage()" class="error-message mat-body-1">
+            {{ errorMessage() }}
+      </p>
+      
       <app-candidates-list [candidates]="candidates()"></app-candidates-list>
 </div>

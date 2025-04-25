@@ -1,3 +1,8 @@
-.form-bg{
+.form-bg {
       background-color: #fff;
+}
+
+.error-message {
+      color: #f44336;
+      margin: 1.25rem 1.25rem;
 }

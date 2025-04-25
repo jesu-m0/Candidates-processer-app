@@ -38,15 +38,20 @@
                   <label class="upload-label">Excel File *</label>
                   <div class="upload-zone" (click)="fileInput.click()" (dragover)="onDragOver($event)"
                         (drop)="onDrop($event)">
-                        <input #fileInput type="file" accept=".xlsx" (change)="onExcelChange($event)" hidden />
+
+                        <input #fileInput type="file" accept=".xlsx" (change)="onExcelChange($event)" hidden/>
+
                         <mat-icon>upload_file</mat-icon>
+
                         <p class="upload-text">
                               Click to upload or drag and drop<br />
                               <small>Excel files only (.xlsx)</small>
                         </p>
+
                         <p *ngIf="selectedExcel" class="upload-filename">
                               {{ selectedExcel.name }}
                         </p>
+
                         <mat-error *ngIf="candidateForm.get('excel')?.hasError('required')">
                               Excel file is required
                         </mat-error>

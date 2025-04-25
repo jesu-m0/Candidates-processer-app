@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -26,6 +26,10 @@ import { CreateCandidateRequest } from '../../../../shared/models/createCandidat
 export class CandidatesFormComponent {
 
       @Output() submitCandidate = new EventEmitter<CreateCandidateRequest>();
+      @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+      @ViewChild(FormGroupDirective) private formDirective!: FormGroupDirective;
+
+
 
       candidateForm!: FormGroup;
       selectedExcel: File | null = null;
@@ -60,14 +64,14 @@ export class CandidatesFormComponent {
             }
       }
 
-      private handleExcel(excel: File) { //TODO: validate size and type before
+      private handleExcel(excel: File) {
             this.selectedExcel = excel;
             this.candidateForm.patchValue({ excel });
       }
 
       onSubmit() {
             if (this.candidateForm.invalid || !this.selectedExcel) {
-                  //TODO: handle error.
+                  this.candidateForm.markAllAsTouched();
                   return;
             }
 
@@ -76,6 +80,10 @@ export class CandidatesFormComponent {
                   surname: this.candidateForm.value.surname,
                   excel: this.selectedExcel
             });
+
+            this.formDirective.resetForm();
+            this.selectedExcel = null;
+            this.fileInput.nativeElement.value = '';
       }
 
 

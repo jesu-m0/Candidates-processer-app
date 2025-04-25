@@ -5,16 +5,18 @@ import { CandidatesPageService } from './candidates-page.service';
 import { Candidate } from '../../shared/models/candidate.model';
 import { CreateCandidateRequest } from '../../shared/models/createCandidateRequest.model';
 import { Seniority } from '../../shared/models/seniority.enum';
+import { CommonModule } from '@angular/common';
 
 @Component({
       selector: 'app-candidates-page',
-      imports: [CandidatesFormComponent, CandidatesListComponent],
+      imports: [CommonModule, CandidatesFormComponent, CandidatesListComponent],
       templateUrl: './candidates-page.component.html',
       styleUrl: './candidates-page.component.css'
 })
 export class CandidatesPageComponent {
 
       candidates = signal<Candidate[]>([]);
+      errorMessage = signal<string | null>(null);
 
       constructor(private candidatesPageService: CandidatesPageService) { }
 
@@ -25,7 +27,7 @@ export class CandidatesPageComponent {
                   },
                   error: err => {
                         console.error('Error loading candidates:', err);
-                        // TODO: mostrar un mensaje de error en la UI
+                        this.errorMessage.set('Failed to load candidates. Please try again later.');
                   }
             });
       }
@@ -39,7 +41,7 @@ export class CandidatesPageComponent {
                   },
                   error: err => {
                         console.error('Upload error:', err);
-                        //TODO: show the error to the user
+                        this.errorMessage.set('Error uploading candidate. Please check your file and try again.');
                   }
             });
       }
