@@ -5,17 +5,14 @@
 }
 
 /* Header */
-.form-card-header {
-      background-color: #FEF2F2;
-}
-
 .form-title {
-      font-size: 1.25rem;
-      font-weight: 600;
+      font-size: 2rem;
+      font-weight: 900;
 }
 
 .form-subtitle {
       font-size: 0.9rem;
+      font-weight: 600;
       color: rgba(0, 0, 0, 0.6);
 }
 
@@ -61,7 +58,7 @@
 }
 
 .upload-zone:hover {
-      background-color: #fafafa;
+      background-color: #eeeeee;
 }
 
 .upload-text {

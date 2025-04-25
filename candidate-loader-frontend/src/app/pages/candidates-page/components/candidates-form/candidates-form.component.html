@@ -1,7 +1,9 @@
 <mat-card class="form-card">
       <mat-card-header class="form-card-header">
-            <mat-card-title class="form-title">Add New Candidate</mat-card-title>
-            <mat-card-subtitle class="form-subtitle">
+            <mat-card-title class="form-title">
+                  <mat-icon aria-hidden="false" aria-label="Add candidate icon">person_add</mat-icon>
+                  Add New Candidate
+            </mat-card-title> <mat-card-subtitle class="form-subtitle">
                   Enter candidate details and upload their information
             </mat-card-subtitle>
       </mat-card-header>
@@ -30,11 +32,10 @@
 
                   <!-- Excel Upload -->
                   <label class="upload-label">Excel File *</label>
-                  <div class="upload-zone" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+                  <div class="upload-zone" (click)="fileInput.click()" (dragover)="onDragOver($event)"
+                        (drop)="onDrop($event)">
                         <input #fileInput type="file" accept=".xlsx" (change)="onExcelChange($event)" hidden />
-                        <button mat-icon-button type="button" (click)="fileInput.click()">
-                              <mat-icon>upload_file</mat-icon>
-                        </button>
+                        <mat-icon>upload_file</mat-icon>
                         <p class="upload-text">
                               Click to upload or drag and drop<br />
                               <small>Excel files only (.xlsx)</small>
