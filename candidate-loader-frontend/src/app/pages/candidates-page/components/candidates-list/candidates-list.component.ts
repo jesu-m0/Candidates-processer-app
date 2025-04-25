@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { Seniority } from '../../../../shared/models/seniority.enum';
 
 @Component({
       selector: 'app-candidates-list',
@@ -17,6 +18,8 @@ import { MatChipsModule } from '@angular/material/chips';
       styleUrl: './candidates-list.component.css'
 })
 export class CandidatesListComponent {
+
+      public Seniority = Seniority;
 
       @Input() candidates: Candidate[] = [];
 

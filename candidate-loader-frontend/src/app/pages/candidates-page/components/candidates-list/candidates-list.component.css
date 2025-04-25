@@ -1,0 +1,37 @@
+.no-candidates-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+}
+
+.candidates-table {
+      background-color: transparent;
+      box-shadow: none;
+}
+
+.table-overflow {
+      overflow-x: auto;
+}
+
+.section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 1.5rem 1.5rem 0rem;
+}
+
+:host ::ng-deep .senior-badge .mdc-evolution-chip__cell {
+      border-radius: 10rem;
+      background-color: #3f51b5;
+}
+
+:host ::ng-deep .badge-text .mdc-evolution-chip__text-label {
+      color: #fff !important;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+}
+
+
+:host ::ng-deep .junior-badge .mdc-evolution-chip__cell {
+      border-radius: 10rem;
+      background-color: #31a73b;
+}
