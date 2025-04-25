@@ -11,18 +11,18 @@
    ```bash
    cd candidate-processor
    # Frontend
-   cd frontend && npm install
+   cd candidate-loader-backend && npm install
    # Backend
-   cd ../backend && npm install
+   cd ../candidate-loader-frontend && npm install
    ```
 
 2. **Run**
       ```bash
       # Backend
-      cd backend && npm run start:dev
+      cd candidate-loader-backend && npm run start:dev
 
       # Frontend (separate terminal)
-      cd ../frontend && npm start
+      cd ../candidate-loader-frontend && npm start
       ```
       Browse to http://localhost:4200
 
