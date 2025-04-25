@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { isSeniority, Seniority } from "./entities/seniority.enum";
 import { Cell, Workbook, Worksheet } from "exceljs";
 import { CandidateDto } from "./dto/candidate.dto";
-import { CandidateFullName } from "./dto/candidate-full-name.dto";
+import { CandidateFullNameDto } from "./dto/candidate-full-name.dto";
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class CandidateService {
       private readonly candidates: CandidateDto[] = []; //This could be replaced by a repository with a conection to the DB.
 
 
-      async parseAndSave(personalInfo: CandidateFullName, excelFile: Express.Multer.File): Promise<CandidateDto> {
+      async parseAndSave(personalInfo: CandidateFullNameDto, excelFile: Express.Multer.File): Promise<CandidateDto> {
 
             if (!excelFile?.buffer) {
                   throw new BadRequestException('Excel file is missing');

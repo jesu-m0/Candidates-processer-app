@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Upl
 import { CandidateService } from './candidate.service';
 import { CandidateDto } from './dto/candidate.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CandidateFullName } from './dto/candidate-full-name.dto';
+import { CandidateFullNameDto } from './dto/candidate-full-name.dto';
 
 @Controller('candidates')
 export class CandidateController {
@@ -11,7 +11,7 @@ export class CandidateController {
       @Post('create')
       @UseInterceptors(FileInterceptor('excel'))
       async upload(
-            @Body() personalInfoDto: CandidateFullName,
+            @Body() personalInfoDto: CandidateFullNameDto,
             @UploadedFile() excel: Express.Multer.File,
       ): Promise<CandidateDto> {
 
